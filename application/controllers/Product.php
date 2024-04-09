@@ -41,6 +41,7 @@ class Product extends CI_Controller {
 		$data['produk'] = $this->barang->produk($config['per_page'], $data['start'], $data['keyword']);
         
 
+        $this->load->view('templates/product_header', $data);
         $this->load->view('product/index', $data);
     }
 
@@ -53,8 +54,7 @@ class Product extends CI_Controller {
         $data['detail'] = $this->barang->detail($id);
         $data['username'] = $this->session->userdata('user_username');
         
-        //$this->load->view('templates/header', $data);
-        //$this->load->view('templates/navbar');
+        $this->load->view('templates/product_header', $data);
         $this->load->view('product/detail', $data);
     }
 }
