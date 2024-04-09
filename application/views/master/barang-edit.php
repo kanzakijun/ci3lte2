@@ -29,33 +29,36 @@
             <div class="card card-primary">
               <!-- /.card-header -->
               <!-- form start -->
-              <?= $this->session->flashdata('message'); ?>
               <form id="quickForm" action="<?= base_url('barang/edit/') . $m['barang_id']; ?>" method="post" enctype="multipart/form-data">
+                <?= $this->session->flashdata('message'); ?>
                 <div class="card-body">
                   <div class="form-group">
                     <label>Nama Barang</label>
                     <input type="text" name="barang_nama" class="form-control" id="barang_nama" placeholder="Nama Barang" value="<?= set_value('barang_nama', $m['barang_nama']); ?>">
+                    <?= form_error('barang_nama', '<small class="text-danger pl-3">', '</small>'); ?>
                   </div>
                   <div class="form-group">
                     <label>Harga</label>
                     <input type="number" name="harga" class="form-control" id="harga" placeholder="Harga Barang" value="<?= set_value('harga', $m['barang_harga']); ?>">
+                    <?= form_error('harga', '<small class="text-danger pl-3">', '</small>'); ?>
                   </div>
                   <div class="form-group">
                     <label>Keterangan</label>
-                    <textarea name="ket" class="form-control" id="" cols="30" rows="3"><?= set_value('ket', $m['barang_keterangan']); ?>
-                    </textarea>
+                    <textarea name="ket" class="form-control" id="" cols="30" rows="3"><?= set_value('ket', $m['barang_keterangan']); ?></textarea>
+                    <?= form_error('ket', '<small class="text-danger pl-3">', '</small>'); ?>
                   </div>
                   <div class="form-group">
                     <label>Tambah Foto</label>
                     <input type="checkbox" name="tambahFoto" id="tambahFoto">
-                    <input type="file" name="fotos[]" class="form-control" id="fotos" multiple disabled>
+                    <input type="file" name="fotos[]" class="form-control" id="fotos" multiple disabled required>
                     <input type="hidden" name="checkboxStatus" id="checkboxStatus" value="0">
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary">Update</button>
                 </div>
               </form>
+              <div id="preview_fotos"></div>
               <hr>
               <div class="row">
 				<?php foreach ($gambar as $gm) : ?>
@@ -63,7 +66,7 @@
 						<div class="form-group">
 							<img src="<?= base_url('assets/img/barang/') . $gm['barang_foto_file'] ?>" id="gambar_load" class="img-thumbnail">
 						</div>
-						<button data-toggle="modal" data-target="#delete<?= $gm['barang_foto_id'] ?>" class="btn btn-danger btn-xs btn-block"><i class="fas fa-trash"></i> Delete</button>
+						<a href="#" data-toggle="modal" data-target="#delete<?= $gm['barang_foto_id'] ?>" class="btn btn-danger btn-xs btn-block"><i class="fas fa-trash"></i>Delete</a>
 					</div>
 				<?php endforeach; ?>
 
@@ -116,7 +119,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Delete <?= $gm['barang_foto_id'] ?></h4>
+					<h4 class="modal-title">Delete</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -124,7 +127,7 @@
 				<div class="modal-body text-center">
 
 					<div class="form-group">
-						<img src="<?= base_url('assets/img/barang/' . $gm['barang_foto_file']) ?>" id="gambar_load" class="img-thumbnail w-50">
+						<img src="<?= base_url('assets/img/barang/' . $gm['barang_foto_file'])?>" id="gambar_load" class="img-thumbnail w-50">
 					</div>
 					<h5>Apakah Anda Yakin Ingin Menghapus Gambar Ini...?</h5>
 
@@ -132,7 +135,7 @@
 				</div>
 				<div class="modal-footer justify-content-between">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<a href="<?= base_url('barang/delete/' . $gm['barang_foto_id']) ?>" class="btn btn-primary">Delete</a>
+					<a href="<?= base_url('barang/deleteGambar/' . $gm['barang_foto_file']) . '/' . $m['barang_id'] ?>" class="btn btn-primary">Delete</a>
 				</div>
 
 			</div>
@@ -145,6 +148,30 @@
 
 
 <!-- Page specific script -->
+
+<script>
+function prevGambar(input) {
+    // Menghapus konten preview sebelumnya
+    $('#preview_fotos').empty();
+
+    if (input.files && input.files.length > 0) {
+        // Melakukan iterasi untuk setiap file yang dipilih
+        for (var i = 0; i < input.files.length; i++) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                // Menambahkan tag img untuk setiap file yang diunggah
+                $('#preview_fotos').append('<img src="' + e.target.result + '" width="200px" class="img-thumbnail">');
+            }
+            reader.readAsDataURL(input.files[i]);
+        }
+    }
+}
+
+$("#fotos").change(function() {
+    prevGambar(this);
+});
+</script>
+
 <script>
 	function bacaGambar(input) {
 		if (input.files && input.files[0]) {

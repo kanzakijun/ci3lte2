@@ -93,7 +93,8 @@ class Barang extends CI_Controller {
     }
 }
 
-    public function edit($id)
+
+public function edit($id)
     {
         $data['title'] = 'Edit Product';
         $data['user'] = $this->db->get_where('master_user', ['user_username' => $this->session->userdata('user_username')])->row_array();
@@ -102,9 +103,14 @@ class Barang extends CI_Controller {
         $data['master'] = $this->db->get_where('master_barang', ['barang_id' => $id])->result_array();
         $data['gambar'] = $this->db->get_where('master_barang_foto', ['barang_id' => $id])->result_array();
 
-        $this->form_validation->set_rules('nama_barang', 'Nama Barang', 'required|trim');
+        $namaBarang = $this->input->post('barang_nama');
+        $harga = $this->input->post('harga');
+        $ket = $this->input->post('ket');
+        $checkboxStatus = $this->input->post('checkboxStatus');
+
+        $this->form_validation->set_rules('barang_nama', 'Nama Barang', 'required|trim');
         $this->form_validation->set_rules('harga', 'Harga', 'required|trim');
-        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required|trim');
+        $this->form_validation->set_rules('ket', 'Keterangan', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -112,33 +118,61 @@ class Barang extends CI_Controller {
             $this->load->view('templates/sidebar', $data);
             $this->load->view('master/barang-edit', $data);
         } else {
-            $namaBarang = $this->input->post('nama_barang');
-            $harga = $this->input->post('harga');
-            $ket = $this->input->post('keterangan');
-            $checkboxStatus = $this->input->post('checkboxStatus');
-
             $data = [
-                    'barang_nama' => $namaBarang,
-                    'barang_harga' => $harga,
-                    'barang_keterangan' => $ket,
-                ];
+                        'barang_nama' => $namaBarang,
+                        'barang_harga' => $harga,
+                        'barang_keterangan' => $ket,
+                    ];
+                    if($checkboxStatus == '1') {
+                        $this->db->where('barang_id', $id);
+                        $this->db->update('master_barang', $data);
+                        
+                        $idFoto = $id;
+                        $fotos = $_FILES['fotos'];
 
-                $this->db->where('barang_id', $id);
-                $this->db->update('master_barang', $data);
-                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has been updated!</div>');
-                redirect('barang');
+                        // Perulangan dengan foreach
+                        foreach ($fotos['name'] as $key => $foto_name) {
+                            $_FILES['file']['name']     = $fotos['name'][$key];
+                            $_FILES['file']['type']     = $fotos['type'][$key];
+                            $_FILES['file']['tmp_name'] = $fotos['tmp_name'][$key];
+                            $_FILES['file']['error']    = $fotos['error'][$key];
+                            $_FILES['file']['size']     = $fotos['size'][$key];
 
-            // Cek Status BELUM BENER
-            if($checkboxStatus == '1') {
-                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Status Check</div>');
-            } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Status Uncheck</div>');
+                        // Konfigurasi Upload
+                            $config['upload_path']          = './assets/img/barang/';
+                            $config['allowed_types']        = 'gif|jpg|png|pdf';
+
+                        // Library Upload dan Setting Konfigurasi
+                            $this->load->library('upload', $config);
+                            $this->upload->initialize($config);
+                            
+                            if ($this->upload->do_upload('file')) { // Jika Berhasil Upload
+                                $fileData = $this->upload->data(); // Upload Data
+                        
+                                // Variable untuk dimasukkan ke Database
+                                $uploadData = [
+                                    'barang_id' => $idFoto,
+                                    'barang_foto_file' => $fileData['file_name']
+                                    ];
+
+                                    $this->db->insert('master_barang_foto', $uploadData);
+                                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has been updated!</div>');
+                                    redirect('barang');
+                                } else {
+                                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $this->upload->display_errors() . '</div>');
+                                    redirect('barang/edit/' . $id);
+                                }
+                            } 
+                        } else {
+                            if($checkboxStatus == '0') {
+                                $this->db->where('barang_id', $id);
+                        $this->db->update('master_barang', $data);
+                        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has ADASDbeen updated!</div>');
+                        redirect('barang');
+                        }
+                    }
+                }
             }
-
-        }
-
-    }
-
     public function delete($id)
     {
         $this->db->where('barang_id', $id);
@@ -155,6 +189,13 @@ class Barang extends CI_Controller {
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has been deleted!</div>');
         redirect('barang');
     }
-}
 
+    public function deleteGambar($gm, $id)
+    {
+        $this->db->where('barang_foto_file', $gm);
+        $this->db->delete('master_barang_foto');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Photo Product has been deleted!</div>');
+        redirect('barang/edit/' . $id);
+    }
+}
 /* End of file Barang.php and path /application/controllers/Barang.php */
