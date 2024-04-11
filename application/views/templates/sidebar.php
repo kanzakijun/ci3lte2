@@ -65,9 +65,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('keranjang') ?>" class="nav-link <?php if ($this->uri->segment(1) == 'keranjang') { echo "active";} ?>">
+                <a href="<?= base_url('pembayaran') ?>" class="nav-link <?php if ($this->uri->segment(1) == 'pembayaran') { echo "active";} ?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Keranjang</p>
+                  <p>Pembayaran</p>
                 </a>
               </li>
             </ul>

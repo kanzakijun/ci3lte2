@@ -23,9 +23,6 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-header">
-                <a href="<?= base_url('barang/add') ?>" class="btn btn-primary">Tambah Barang</a>
-              </div>
               <!-- /.card-header -->
               <?= $this->session->flashdata('message'); ?>
               <div class="card-body">
@@ -35,12 +32,10 @@
                     <th>#</th>
                     <th>Pembayaran ID</th>
                     <th>Nama Pemesan</th>
-                    <th>Nama Barang</th>
-                    <th>Alamat</th>
                     <th>No WA</th>
-                    <th>Jumlah</th>
-                    <th>Harga</th>
+                    <th>Alamat</th>
                     <th>Total</th>
+                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -51,15 +46,17 @@
                     <td><?= $i ?></td>
                     <td><?= $m['pembayaran_id']; ?></td>
                     <td><?= $m['pembayaran_nama_pemesan']; ?></td>
-                    <td><?= $m['barang_nama']; ?></td>
-                    <td><?= $m['pembayaran_alamat']; ?></td>
                     <td><?= $m['pembayaran_no_wa']; ?></td>
-                    <td><?= $m['keranjang_jumlah']; ?></td>
-                    <td><?= $m['keranjang_harga']; ?></td>
-                    <td><?= $m['keranjang_total']; ?></td>
+                    <td><?= $m['pembayaran_alamat']; ?></td>
+                    <td><?= $m['pembayaran_total']; ?></td>
+                    <td><?php if($m['pembayaran_status'] == 0) : ?>
+                      <?= '<span class="badge badge-warning">Belum Dibayar</span>' ?>
+                      <?php else : ?>
+                      <?= '<span class="badge badge-success">Sudah Dibayar</span>' ?> 
+                      <?php endif; ?>
+                    </td>
                     <td>
-                      <a href="<?= base_url('barang/edit/') . $m['barang_id'] ?>" class="btn btn-success btn-sm">Edit</a>
-                      <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteBarangModal<?= $m['barang_id'] ?>">Delete</a>
+                      <a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<?= $m['pembayaran_id'] ?>">Konfirmasi</a>
                     </td>
                   </tr>
                   <?php $i++; ?>
@@ -100,25 +97,31 @@
 <!-- Modal Delete -->
 <?
 foreach ($master as $m) : ?>
-    <div class="modal fade" id="deleteBarangModal<?= $m['barang_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="deleteBarangModal
+    <div class="modal fade" id="updateModal<?= $m['pembayaran_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="updateModal
     Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteBarangModal
-                    Label">Delete User</h5>
+                    <h5 class="modal-title" id="updateModalLabel">Konfirmasi Pembayaran a/n <?= $m['pembayaran_nama_pemesan'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= base_url('barang/delete/' . $m['barang_id']) ?>" method="post" enctype="multipart/form-data">
+                <form action="<?= base_url('pembayaran/konfirmasi/' . $m['pembayaran_id']) ?>" method="post">
+
+                <?php if($m['pembayaran_status'] == 1) : ?>
+                  <div class="alert">
+                    <p><strong><?= $m['pembayaran_nama_pemesan'] ?></strong> sudah melakukan pembayaran.</p>
+                  </div>
+                    <?php else : ?>
                     <div class="modal-body">
-                        <p>Are you sure want to delete "<?= $m['barang_nama'] ?>"?</p>
+                        <p>Apakah anda yakin ingin mengkonfirmasi pembayaran ini?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-success">Konfirmasi</button>
                     </div>
+                    <?php endif; ?>
                 </form>
             </div>
         </div>

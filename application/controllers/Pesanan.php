@@ -16,8 +16,9 @@ class Pesanan extends CI_Controller {
 
     public function bayar($keranjang_id)
     {
-        $data['title'] = 'Pesanan';
+        $data['title'] = 'Konfirmasi Pembayaran';
         $data['bayar'] = $this->pembayaran->bayar($keranjang_id);
+        $data['rekening'] = $this->db->get('master_bank')->result_array();
 
         if(empty($data['bayar'])) {
             redirect('shop');

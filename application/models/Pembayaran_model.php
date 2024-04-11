@@ -3,6 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         
 class Pembayaran_model extends CI_Model 
 {
+    public function getPembayaran()
+    {
+        $this->db->select('*');
+        $this->db->from('proses_pembayaran');
+        $query = $this->db->get();
+        return $query->result_array($query);
+    }
+
     public function get_id()
     {
         $this->db->select_max('pembayaran_id');
@@ -22,7 +30,13 @@ class Pembayaran_model extends CI_Model
         $this->db->where('pembayaran_id', $keranjang_id);
         $query = $this->db->get();
         return $query->result_array($query);
-    }                        
+    }
+    
+    public function konfirmasi($pembayaran_id)
+    {
+        $this->db->where('pembayaran_id', $pembayaran_id);
+        $this->db->update('proses_pembayaran', ['pembayaran_status' => '1']);
+    }
                         
 }
 
