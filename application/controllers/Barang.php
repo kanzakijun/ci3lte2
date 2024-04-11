@@ -175,15 +175,15 @@ public function edit($id)
             }
     public function delete($id)
     {
+        
+        $fotos = $this->db->get_where('master_barang_foto', ['barang_id' => $id])->result_array();
         $this->db->where('barang_id', $id);
         $this->db->delete('master_barang');
         $this->db->where('barang_id', $id);
         $this->db->delete('master_barang_foto');
 
-        $foto = $this->db->get_where('master_barang_foto', ['barang_id' => $id])->result_array();
-
-        if($foto) {
-            unlink(FCPATH . 'assets/img/barang/' . $foto['barang_foto_file']);
+        foreach ($fotos as $foto) {
+            unlink('assets/img/barang/' . $foto['barang_foto_file']);
         }
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has been deleted!</div>');
@@ -194,6 +194,7 @@ public function edit($id)
     {
         $this->db->where('barang_foto_file', $gm);
         $this->db->delete('master_barang_foto');
+        unlink('assets/img/barang/' . $gm);
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Photo Product has been deleted!</div>');
         redirect('barang/edit/' . $id);
     }
