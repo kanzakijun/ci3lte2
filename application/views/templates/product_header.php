@@ -66,9 +66,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<span class="badge badge-danger navbar-badge"><?= $jml_item ?></span>
 				</a>
 				<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+					<?php if (empty($keranjang)) : ?>
+						<a href="#" class="dropdown-item">
+							<p>Keranjang Belanja Kosong</p>
+						</a>
+					<?php else : ?>
 				<?php foreach ($keranjang as $k) : ?>
 							<!-- barang start -->
-							<a href="<?= base_url('belanja') ?>" class="dropdown-item">
+							<a href="<?= base_url('shop') ?>" class="dropdown-item">
 								<div class="media">
 									<?php $foto = $this->db->get_where('master_barang_foto', ['barang_id' => $k['id']])->row_array(); ?>
 									<img src="<?= base_url('assets/img/barang/') . $foto['barang_foto_file'] ?>" alt="User Avatar" class="img-size-50 mr-3">
@@ -85,7 +90,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							</a>
 							<div class="dropdown-divider"></div>
 						<!-- barang End -->
-						<a href="<?= base_url('belanja') ?>" class="dropdown-item">
+						<a href="<?= base_url('shop') ?>" class="dropdown-item">
 							<div class="media">
 								<div class="media-body">
 									<tr>
@@ -99,8 +104,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 						<?php endforeach; ?>
 						<div class="dropdown-divider"></div>
-						<a href="<?= base_url('belanja') ?>" class="dropdown-item dropdown-footer">View Cart</a>
+						<a href="<?= base_url('shop') ?>" class="dropdown-item dropdown-footer">View Cart</a>
 						<a href="<?= base_url('belanja/cekout')  ?>" class="dropdown-item dropdown-footer">Check Out</a>
+						<?php endif; ?>
             
 				</div>
 			</li>

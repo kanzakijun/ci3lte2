@@ -16,7 +16,12 @@ class Keranjang_model extends CI_Model
         $this->db->limit(1);
         $query = $this->db->get();
         return $query->result_array();
-    }                        
+    }
+    
+    public function simpan_keranjang($data_keranjang)
+    {
+        $this->db->insert('proses_keranjang', $data_keranjang);
+    }
                         
 }
 
