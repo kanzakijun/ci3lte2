@@ -75,11 +75,18 @@ class User extends CI_Controller {
 
         
         $this->form_validation->set_rules('fullname', 'Fullname', 'required|trim');
-        $this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[6]|matches[password2]', [
-            'matches' => 'Password dont match!',
-            'min_length' => 'Password too short!'
-        ]);
-        $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
+        $this->form_validation->set_rules('username', 'Username', 'required|trim|callback_username_check');
+        if($this->input->post('password')) {
+            $this->form_validation->set_rules('password1', 'Password', 'min_length[6]');
+            $this->form_validation->set_rules('password2', 'Konfirmasi Password', 'matches[password1]',
+                array('matches' => '%s tidak sesuai dengan password')    
+            );
+        }
+        if($this->input->post('password2')) {
+            $this->form_validation->set_rules('password2', 'Konfirmasi Password', 'matches[password1]',
+                array('matches' => '%s tidak sesuai dengan password')    
+            );
+        }
 
         if($this->form_validation->run() == false) {
         $this->load->view('templates/header', $data);
@@ -87,9 +94,11 @@ class User extends CI_Controller {
         $this->load->view('templates/sidebar', $data);
         $this->load->view('master/user-edit', $data);
         } else {
+            if(!empty($this->input->post('password1'))) {
+            $data['password'] = password_hash($this->input->post('password1'), PASSWORD_DEFAULT);
+        }
             $data = [
                 'user_username' => $this->input->post('username'),
-                'user_password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
                 'user_nama_lengkap' => $this->input->post('fullname')
                 ];
 
@@ -97,6 +106,19 @@ class User extends CI_Controller {
             $this->db->update('master_user', $data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">User has been updated!</div>');
             redirect('user');
+        }
+    }
+
+    // callback custom validation
+
+    function username_check() {
+        $post = $this->input->post(null, true);
+        $query = $this->db->query("SELECT * FROM master_user WHERE user_username = '$post[username]' AND user_id != '$post[user_id]'");
+        if($query->num_rows() > 0) {
+            $this->form_validation->set_message('username_check', '{field} ini sudah dipakai, silakan ganti');
+            return false;
+        } else {
+            return true;
         }
     }
     

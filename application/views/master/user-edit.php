@@ -34,6 +34,7 @@
                 
               <form id="quickForm" action="<?= base_url('user/edit/' . $m['user_id']); ?>" method="post">
               <?= form_error('username', '<small class="text-danger pl-3">', '</small>'); ?>
+              <?= form_hidden('user_id', $m['user_id']); ?>
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputFullname1">Nama Lengkap</label>
@@ -44,7 +45,7 @@
                     <input type="text" name="username" class="form-control" id="username" value="<?= set_value('username', $m['user_username']); ?>">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
+                    <label for="exampleInputPassword1">Password</label>  <small>(Biarkan kosong jika tidak diganti)</small>
                     <input type="password" name="password1" class="form-control" id="password1" placeholder="Password">
                   </div>
                   <div class="form-group">
