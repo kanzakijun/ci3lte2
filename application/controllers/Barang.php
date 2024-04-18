@@ -65,7 +65,7 @@ class Barang extends CI_Controller {
 
             // Konfigurasi Upload
             $config['upload_path']          = './assets/img/barang';
-            $config['allowed_types']        = 'gif|jpg|png|pdf';
+            $config['allowed_types']        = 'gif|jpg|png|jpeg';
 
             // Library Upload dan Setting Konfigurasi
             $this->load->library('upload', $config);

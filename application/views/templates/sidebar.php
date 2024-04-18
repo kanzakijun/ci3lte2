@@ -11,10 +11,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?= base_url('assets/') ?>dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="<?= base_url('assets/') ?>dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User img">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?= $username ?></a>
+          <p class="d-block text-white"><?= $username ?></p>
         </div>
       </div>
 
@@ -24,14 +24,14 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
-					<a href="<?= base_url('dashboard') ?>" class="nav-link <?php if ($this->uri->segment(1) == 'dashboard' and $this->uri->segment(2) == "") {
+					<a href="<?= base_url('dashboard') ?>" class="nav-link <?php if ($this->uri->segment(1) == 'dashboard' && $this->uri->segment(2) == "") {
 						echo "active";
 						} ?>">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p> Dashboard </p>
 					</a>
 				</li>
-          <li class="nav-item <?php if($this->uri->segment(1) != 'dashboard') { echo "menu-open";} ?>">
+          <li class="nav-item <?php if($this->uri->segment(1) != 'dashboard' && $this->uri->segment(1) != 'pesanan_masuk') { echo "menu-open";} ?>">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
@@ -64,15 +64,14 @@
                   <p>Master Barang</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="<?= base_url('pembayaran') ?>" class="nav-link <?php if ($this->uri->segment(1) == 'pembayaran') { echo "active";} ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Pembayaran</p>
-                </a>
-              </li>
             </ul>
           </li>
-          <li class="nav-header">EXAMPLES</li>
+          <li class="nav-item">
+                <a href="<?= base_url('pesanan_masuk') ?>" class="nav-link <?php if ($this->uri->segment(1) == 'pesanan_masuk') { echo "active";} ?>">
+                  <i class="fas fa-download nav-icon"></i>
+                  <p>Pesanan Masuk</p>
+                </a>
+              </li>
           <li class="nav-item">
             <a href="<?= base_url('product') ?>" class="nav-link">
               <i class="nav-icon fas fa-briefcase"></i>

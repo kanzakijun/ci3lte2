@@ -76,8 +76,11 @@ class User extends CI_Controller {
         
         $this->form_validation->set_rules('fullname', 'Fullname', 'required|trim');
         $this->form_validation->set_rules('username', 'Username', 'required|trim|callback_username_check');
-        if($this->input->post('password')) {
-            $this->form_validation->set_rules('password1', 'Password', 'min_length[6]');
+        if($this->input->post('password1')) {
+            $this->form_validation->set_rules('password1', 'Password', 'trim|min_length[6]|matches[password2]', [
+            'matches' => 'Password dont match!',
+            'min_length' => 'Password too short!'
+        ]);
             $this->form_validation->set_rules('password2', 'Konfirmasi Password', 'matches[password1]',
                 array('matches' => '%s tidak sesuai dengan password')    
             );

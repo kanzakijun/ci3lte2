@@ -22,6 +22,19 @@ class Keranjang_model extends CI_Model
     {
         $this->db->insert('proses_keranjang', $data_keranjang);
     }
+
+    public function rinci($pembayaran_id)
+    {
+        $query = "SELECT proses_keranjang.*, master_barang.barang_id, master_barang.barang_nama, master_barang.barang_harga FROM proses_keranjang JOIN master_barang ON proses_keranjang.barang_id = master_barang.barang_id";
+        return $query->result_array();
+    }
+
+    public function rinci_barang($proses_keranjang_id)
+    {
+        $this->db->where('barang_id', $proses_keranjang_id);
+        $query = $this->db->get('master_barang');
+        return $query->result_array();
+    }
                         
 }
 

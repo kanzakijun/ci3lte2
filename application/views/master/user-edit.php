@@ -47,10 +47,12 @@
                   <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>  <small>(Biarkan kosong jika tidak diganti)</small>
                     <input type="password" name="password1" class="form-control" id="password1" placeholder="Password">
+                    <?= form_error('password1', '<small class="text-danger pl-3">', '</small>'); ?>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword2">Retype Password</label>
                     <input type="password" name="password2" class="form-control" id="password2" placeholder="Retype Password">
+                    <?= form_error('password2', '<small class="text-danger pl-3">', '</small>'); ?>
                   </div>
                 </div>
                 <!-- /.card-body -->

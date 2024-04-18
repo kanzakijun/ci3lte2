@@ -48,7 +48,9 @@
                     <td><?= $m['user_nama_lengkap']; ?></td>
                     <td>
                       <a href="<?= base_url('user/edit/') . $m['user_id'] ?>" class="btn btn-success btn-sm">Edit</a>
+                      <?php if ($m['user_username'] != $username) : ?>
                       <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteUserModal<?= $m['user_id'] ?>">Delete</a>
+                      <?php endif; ?>
                     </td>
                   </tr>
                   <?php $i++; ?>

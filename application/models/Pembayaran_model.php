@@ -37,6 +37,18 @@ class Pembayaran_model extends CI_Model
         $this->db->where('pembayaran_id', $pembayaran_id);
         $this->db->update('proses_pembayaran', ['pembayaran_status' => '1']);
     }
+
+    public function kirim($pembayaran_id, $data)
+    {
+        $this->db->where('pembayaran_id', $pembayaran_id);
+        $this->db->update('proses_pembayaran', $data);
+    }
+
+    public function selesai($pembayaran_id)
+    {
+        $this->db->where('pembayaran_id', $pembayaran_id);
+        $this->db->update('proses_pembayaran', ['pembayaran_status' => '3']);
+    }
                         
 }
 

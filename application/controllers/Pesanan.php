@@ -11,7 +11,7 @@ class Pesanan extends CI_Controller {
 
     public function index()
     {
-
+        redirect('shop');
     }
 
     public function bayar($keranjang_id)
@@ -26,6 +26,18 @@ class Pesanan extends CI_Controller {
 
         $this->load->view('templates/product_header', $data);
         $this->load->view('pesanan/index', $data);
+    }
+
+    public function konfirmasi($pembayaran_id)
+    {
+        $wa = 'https://wa.me/';
+        $nama = $this->input->post('atas_nama');
+        $bank = $this->input->post('nama_bank');
+        $rek = $this->input->post('no_rek');
+
+        $pesan = 'Konfirmasi pembayaran dengan No. Transaksi : '.$pembayaran_id.', atas nama : '.$nama.', melalui : '.$bank.', dengan nomor rekening : '.$rek;
+
+        redirect($wa . '6285647172825' . '?text=' . $pesan);
     }
 }
 
