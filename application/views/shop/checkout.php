@@ -51,7 +51,7 @@
 	<?= validation_errors('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>', '</div>'); ?>
 	<?php
 	echo form_open('shop/checkout');
-	// $no_order = date('Ymd') . strtoupper(random_string('alnum', 8));
+	 $no_order = date('Ymd') . strtoupper(random_string('alnum', 8));
 	?>
 	<div class="row">
 		<!-- accepted payments column -->
@@ -103,6 +103,7 @@
 	<?php $a = 1;
 	foreach ($this->cart->contents() as $items) : ?>
 		<?= form_hidden('barang_id' . $a++, $items['id']); ?>
+	<input name="no_order" value="<?= $no_order ?>" hidden>
 	<input name="barang_nama" value="<?= $items['name'] ?>" hidden>
 	<input name="total_bayar" value="<?= $this->cart->total() ?>" hidden>
 	<!-- end Simpan Transaksi -->

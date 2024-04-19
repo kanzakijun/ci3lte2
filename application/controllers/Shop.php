@@ -48,6 +48,7 @@ class Shop extends CI_Controller
         } else {
             // data ke proses_pembayaran
             $data = [
+                'no_order' => $this->input->post('no_order'),
                 'pembayaran_waktu' => date('Y-m-d H:i:s'),
                 'pembayaran_nama_pemesan' => $this->input->post('nama_penerima'),
                 'pembayaran_no_wa' => $this->input->post('no_wa'),
