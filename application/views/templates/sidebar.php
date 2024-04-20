@@ -73,15 +73,7 @@
                 </a>
               </li>
           <li class="nav-item">
-            <a href="<?= base_url('product') ?>" class="nav-link">
-              <i class="nav-icon fas fa-briefcase"></i>
-              <p>
-                Products
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link" data-toggle="modal"
+            <a href="#" class="nav-link btn-danger" data-toggle="modal"
                       data-target="#logoutModal">
               <i class="nav-icon fas fa-sign-out-alt"></i>
               <p>

@@ -50,7 +50,9 @@
 					<?php if (empty($keranjang)) { ?>
 						<h4 style="text-align: center;" class="mb-3 text-success"><i class="fab fa-creative-commons-zero"></i> Tidak ada pesanan masuk</h1>
 					<?php } else { ?>
-					<table class="table" id="example1"  >
+					<table class="table table-hover">
+					<thead>
+
 						<tr>
 							<th>No Order</th>
 							<th>Tanggal</th>
@@ -58,11 +60,12 @@
 							<th>No WA</th>
 							<th>Alamat</th>
 							<th>Total Bayar</th>
-							
+							<th></th>
 						</tr>
+					</thead>	
 						<?php foreach ($keranjang as $kr) { ?>
 							<tr>
-								<td><?= $kr['pembayaran_id'] ?></td>
+								<td><?= $kr['no_order'] ?></td>
 								<td><?= $kr['pembayaran_waktu'] ?></td>
 								<td><?= $kr['pembayaran_nama_pemesan'] ?></td>
 								<td><?= $kr['pembayaran_no_wa'] ?></td>
@@ -91,18 +94,21 @@
 				<?php if (empty($diproses)) { ?>
 						<h4 style="text-align: center;" class="mb-3 text-success"><i class="fab fa-creative-commons-zero"></i> Tidak ada pesanan yang diproses</h1>
 					<?php } else { ?>
-					<table class="table" id="example1">
-						<tr>
-							<th>No Order</th>
-							<th>Tanggal</th>
-							<th>Nama Pemesan</th>
-							<th>No WA</th>
-							<th>Alamat</th>
-							<th>Total Bayar</th>
-						</tr>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>No Order</th>
+								<th>Tanggal</th>
+								<th>Nama Pemesan</th>
+								<th>No WA</th>
+								<th>Alamat</th>
+								<th>Total Bayar</th>
+								<th></th>
+							</tr>
+						</thead>
 						<?php foreach ($diproses as $dp) : ?>
 							<tr>
-								<td><?= $dp['pembayaran_id'] ?></td>
+								<td><?= $dp['no_order'] ?></td>
 								<td><?= $dp['pembayaran_waktu'] ?></td>
 								<td><?= $dp['pembayaran_nama_pemesan'] ?></td>
 								<td><?= $dp['pembayaran_no_wa'] ?></td>
@@ -128,20 +134,23 @@
 				<?php if (empty($dikirim)) { ?>
 						<h4 style="text-align: center;" class="mb-3 text-success"><i class="fab fa-creative-commons-zero"></i> Tidak ada pesanan yang dikirim</h1>
 					<?php } else { ?>
-					<table class="table" id="example1">
-						<tr>
-							<th>No Order</th>
-							<th>Tanggal</th>
-							<th>Nama Pemesan</th>
-							<th>No WA</th>
-							<th>Alamat</th>
-							<th>Total Bayar</th>
-							<th>Ekspedisi</th>
-							<th>No Resi</th>
-						</tr>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>No Order</th>
+								<th>Tanggal</th>
+								<th>Nama Pemesan</th>
+								<th>No WA</th>
+								<th>Alamat</th>
+								<th>Total Bayar</th>
+								<th>Ekspedisi</th>
+								<th>No Resi</th>
+								<th></th>
+							</tr>
+						</thead>
 						<?php foreach ($dikirim as $dk) : ?>
 							<tr>
-								<td><?= $dk['pembayaran_id'] ?></td>
+								<td><?= $dk['no_order'] ?></td>
 								<td><?= $dk['pembayaran_waktu'] ?></td>
 								<td><?= $dk['pembayaran_nama_pemesan'] ?></td>
 								<td><?= $dk['pembayaran_no_wa'] ?></td>
@@ -166,21 +175,23 @@
 				<?php if (empty($selesai)) { ?>
 						<h4 style="text-align: center;" class="mb-3 text-success"><i class="fab fa-creative-commons-zero"></i> Tidak ada pesanan yang terkirim</h1>
 					<?php } else { ?>
-					<table class="table" id="example1">
-					<tr>
-							<th>No Order</th>
-							<th>Tanggal</th>
-							<th>Nama Pemesan</th>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>No Order</th>
+								<th>Tanggal</th>
+								<th>Nama Pemesan</th>
 							<th>No WA</th>
 							<th>Alamat</th>
 							<th>Total Bayar</th>
 							<th>Ekspedisi</th>
 							<th>No Resi</th>
 						</tr>
+					</thead>
 						<!-- foreach -->
 						<?php foreach ($selesai as $sl) : ?>
 							<tr>
-								<td><?= $sl['pembayaran_id'] ?></td>
+								<td><?= $sl['no_order'] ?></td>
 								<td><?= $sl['pembayaran_waktu'] ?></td>
 								<td><?= $sl['pembayaran_nama_pemesan'] ?></td>
 								<td><?= $sl['pembayaran_no_wa'] ?></td>
@@ -252,15 +263,41 @@
 				total -->
 				<div class="row">
 					<div class="col-6">
-						<h5>Order : <?= $kr['pembayaran_id'] ?></h5>
-						<h5>Tanggal : <?= $kr['pembayaran_waktu'] ?></h5>
+						<table class="table table-sm">
+							<tr>
+								<td>No. Order</td>
+								<td> : </td>
+								<td><b><?= $kr['no_order'] ?></b></td>
+							</tr>
+							<tr>
+								<td>Tanggal</td>
+								<td> : </td>
+								<td><?= $kr['pembayaran_waktu'] ?></td>
+							</tr>
+							<tr>
+								<td>Pemesan</td>
+								<td> : </td>
+								<td><?= $kr['pembayaran_nama_pemesan'] ?></td>
+							</tr>
+						</table>
 					</div>
 					<div class="col-6">
-						<h5>Pemesan : <?= $kr['pembayaran_nama_pemesan'] ?></h5>
-						<h5>No. WA : <?= $kr['pembayaran_no_wa'] ?></h5>
-						<h5>Alamat : <?= $kr['pembayaran_alamat'] ?></h5>
+						<table class="table table-sm">
+							<tr>
+								<td>No. WA</td>
+								<td> : </td>
+								<td><?= $kr['pembayaran_no_wa'] ?></td>
+							</tr>
+							<tr>
+								<td>Alamat</td>
+								<td> : </td>
+								<td><?= $kr['pembayaran_alamat'] ?></td>
+							</tr>
+						</table>
 					</div>
 				</div>
+				<hr>
+				<!-- table -->
 				<table class="table table-hover table-sm">
 					<thead>
 						<tr>
@@ -365,7 +402,7 @@
             <div class="modal-body">
 
                 <?php echo form_open('pesanan_masuk/selesai/' . $dk['pembayaran_id']) ?>
-                <h4>Tandai Pesanan Telah Selesai?</h3>
+                <h4>Tandai Pesanan dengan No Resi <b><?= $dk['no_resi'] ?></b> Telah Selesai?</h3>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
