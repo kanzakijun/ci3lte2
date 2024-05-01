@@ -1,5 +1,5 @@
 <?php 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') || exit('No direct script access allowed');
 
 class Barang extends CI_Controller {
 
@@ -7,6 +7,7 @@ class Barang extends CI_Controller {
     {
         parent::__construct();
         is_logged_in();
+        $this->load->model('Barang_model', 'barang');
     }
 
     public function index()
@@ -14,7 +15,6 @@ class Barang extends CI_Controller {
         $data['title'] = 'Master Barang';
         $data['user'] = $this->db->get_where('master_user', ['user_username' => $this->session->userdata('user_username')])->row_array();
         $data['username'] = $this->session->userdata('user_username');
-        $this->load->model('Barang_model', 'barang');
         $data['master'] = $this->barang->get_produk();
         $data['fotos'] = $this->barang->get_foto();
 
@@ -29,14 +29,12 @@ class Barang extends CI_Controller {
         $data['title'] = 'Tambah Barang';
         $data['user'] = $this->db->get_where('master_user', ['user_username' => $this->session->userdata('user_username')])->row_array();
         $data['username'] = $this->session->userdata('user_username');
-        $this->load->model('Barang_model');
-        $data['master'] = $this->load->model('Barang_model', 'barang');
 
         $this->form_validation->set_rules('nama_barang', 'Nama Barang', 'required|trim');
         $this->form_validation->set_rules('harga', 'Harga', 'required|trim');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required|trim');
 
-        if ($this->form_validation->run() == false) {
+        if (!$this->form_validation->run()) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/navbar');
             $this->load->view('templates/sidebar', $data);
@@ -80,7 +78,7 @@ class Barang extends CI_Controller {
                     'barang_foto_file' => $fileData['file_name']
                 ];
 
-                $this->db->insert('master_barang_foto', $uploadData);
+                $this->barang->upload_foto($uploadData);
                 
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $this->upload->display_errors() . '</div>');
@@ -90,11 +88,11 @@ class Barang extends CI_Controller {
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New product added!</div>');
         redirect('barang');
+        }
     }
-}
 
 
-public function edit($id)
+    public function edit($id)
     {
         $data['title'] = 'Edit Product';
         $data['user'] = $this->db->get_where('master_user', ['user_username' => $this->session->userdata('user_username')])->row_array();

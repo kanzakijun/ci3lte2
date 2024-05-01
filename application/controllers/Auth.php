@@ -1,13 +1,8 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') || exit('No direct script access allowed');
 
 class Auth extends CI_Controller
 {
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function index()
     {
@@ -20,7 +15,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
         // jika rules tidak memenuhi maka...
-        if ($this->form_validation->run() == false) {
+        if (!$this->form_validation->run()) {
             $data['title'] = 'Login Page';
             $this->load->view('templates/auth_header', $data);
             $this->load->view('auth/login');
